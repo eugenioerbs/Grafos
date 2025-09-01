@@ -1,0 +1,77 @@
+public String buscaProfundidadePartindoDeUmNo(int verticeEscolhido) { // a partir de um nó (pode ser que algum nó fique de fora)
+        StringBuilder sb = new StringBuilder();
+
+        buscaProfundidadePartindoDeUmNo2(verticeEscolhido, sb);
+        return sb.toString();
+    }
+
+    private void buscaProfundidadePartindoDeUmNo2(int verticeEscolhido, StringBuilder sb) {
+        visitados[verticeEscolhido] = true;
+
+        sb.append(verticeEscolhido).append(", ");
+
+        for (int i = 0; i < qntVertices; i++) {
+            if (matriz[verticeEscolhido][i] == 1 && !visitados[i]) {
+                buscaProfundidadePartindoDeUmNo2(i, sb);
+            }
+        }
+    }
+
+    public String buscaProfundidadeTodos() { // Percorre todos vertices, (mas não mostra o tempo)
+
+        visitados = new boolean[qntVertices];
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < qntVertices; i++) {
+            if (visitados[i] == false) {
+                buscaProfundidadeTodos2(i, sb);
+            }
+        }
+        return sb.toString();
+    }
+
+    private void buscaProfundidadeTodos2(int verticeEscolhido, StringBuilder sb) {
+        visitados[verticeEscolhido] = true;
+
+        sb.append(verticeEscolhido).append(", ");
+
+        for (int i = 0; i < qntVertices; i++) {
+            if (matriz[verticeEscolhido][i] == 1 && !visitados[i]) {
+                buscaProfundidadeTodos2(i, sb);
+            }
+        }
+    }
+
+    public String buscaProfundidadeComTempo() { // Percorre todos, e com tempo de visíta
+        tempo = 0;
+        visitados = new boolean[qntVertices];
+        descoberta = new int[qntVertices];
+        finalizacao = new int[qntVertices];
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int v = 0; v < qntVertices; v++) {
+            if (!visitados[v]) {
+                dfsTempoString(v, sb);
+            }
+        }
+        return sb.toString();
+    }
+
+
+    public void dfsTempoString(int verticeDaVez, StringBuilder sb) {
+        visitados[verticeDaVez] = true;
+        tempo++;
+        descoberta[verticeDaVez] = tempo;
+
+        for (int i = 0; i < qntVertices; i++) {
+            if (matriz[verticeDaVez][i] == 1 && !visitados[i]) {
+                dfsTempoString(i, sb);
+            }
+        }
+
+        tempo++;
+        finalizacao[verticeDaVez] = tempo;
+
+        sb.append("Vértice ").append(verticeDaVez).append(" -> (").append(descoberta[verticeDaVez]).append("/").append(finalizacao[verticeDaVez]).append(")\n");
+    }
